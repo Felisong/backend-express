@@ -10,7 +10,7 @@ router.get("/users", (req: Request, res: Response) => {
 router.get("/skills", async (req: Request, res: Response) => {
   try {
     const skills = await Skills.find(); // Fetch skills from the database
-
+    console.log(skills);
     if (skills.length > 0) {
       res.status(200).json({ skills, status: 200 });
     } else {
