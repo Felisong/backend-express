@@ -8,10 +8,9 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-  "https://portfolio-site-front.vercel.app", // Production frontend
-  "http://localhost:3000", // Local frontend
-  // Add more origins as needed
-];
+  process.env.NEXT_PUBLIC_BASE_URL_PROD?.replace("/api", ""), // Remove /api from frontend URL
+  process.env.NEXT_PUBLIC_BASE_URL_LOCAL?.replace("/api", ""),
+].filter(Boolean) as string[];
 
 app.use(express.json());
 app.use(
@@ -45,6 +44,15 @@ app.use("/api", userRoutes);
 // Health check endpoint
 app.get("/", (req: Request, res: Response) => {
   res.send("API is running");
+});
+
+// test
+app.get("/api/cors-info", (req: Request, res: Response) => {
+  res.json({
+    allowedOrigins,
+    currentOrigin: req.headers.origin,
+    isAllowed: allowedOrigins.includes(req.headers.origin || ""),
+  });
 });
 
 // Export the Express app as a Vercel serverless function
