@@ -10,27 +10,31 @@ const app = express();
 const allowedOrigins = [
   process.env.NEXT_PUBLIC_BASE_URL_LOCAL, // Remove /api from frontend URL
   process.env.NEXT_PUBLIC_BASE_URL_LOCAL,
-].filter(Boolean) as string[];
+].filter(Boolean);
 
 app.use(express.json());
 app.use(
   cors({
-    origin: (origin, callback) => {
-      if (!origin) return callback(null, true);
+    origin: true,
+    // origin: (origin, callback) => {
+    //   if (!origin) return callback(null, true);
 
-      if (allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error("Not allowed by CORS"));
-      }
-    },
-    credentials: true,
+    //   if (allowedOrigins.includes(origin)) {
+    //     callback(null, true);
+    //   } else {
+    //     callback(new Error("Not allowed by CORS"));
+    //   }
+    // },
+    // credentials: true,
   })
 );
 
 const MONGO_URI = process.env.MONGO_URI || "";
 mongoose
-  .connect(MONGO_URI)
+  .connect(MONGO_URI, {
+    serverSelectionTimeoutMS: 5000, // 5 second timeout
+    socketTimeoutMS: 45000,
+  })
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => {
     console.error("❌ Fatal MongoDB Error:", err);
