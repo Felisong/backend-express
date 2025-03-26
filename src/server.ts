@@ -10,12 +10,24 @@ const app = express();
 const allowedOrigins = [
   process.env.NEXT_PUBLIC_BASE_URL_LOCAL,
   process.env.NEXT_PUBLIC_BASE_URL_PROD,
-].filter(Boolean);
+].filter(Boolean) as string[];
 
 app.use(express.json());
 app.use(
   cors({
-    origin: true,
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (
+        allowedOrigins.some((allowed) => new URL(origin).origin === allowed)
+      ) {
+        callback(null, true);
+      } else {
+        console.warn(`⚠️ Blocked CORS request from: ${origin}`);
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    methods: ["GET"],
   })
 );
 
