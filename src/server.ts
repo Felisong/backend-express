@@ -7,9 +7,27 @@ import mongoose from "mongoose";
 dotenv.config();
 
 const app = express();
+const allowedOrigins = [
+  "https://portfolio-site-front.vercel.app", // Production frontend
+  "http://localhost:3000", // Local frontend
+  // Add more origins as needed
+];
 
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: (origin, callback) => {
+      if (!origin) return callback(null, true);
+
+      if (allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 const MONGO_URI = process.env.MONGO_URI || "";
 mongoose
