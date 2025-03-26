@@ -20,6 +20,7 @@ mongoose
     process.exit(1); // Force deployment failure on DB connection issues
   });
 
+console.log("✅ Express app initialized");
 // Prefix all routes with /api
 app.use("/api", userRoutes);
 
