@@ -20,6 +20,7 @@ mongoose_1.default
     console.error("❌ Fatal MongoDB Error:", err);
     process.exit(1); // Force deployment failure on DB connection issues
 });
+console.log("✅ Express app initialized");
 // Prefix all routes with /api
 app.use("/api", routes_1.default);
 // Health check endpoint
