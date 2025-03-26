@@ -8,8 +8,8 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-  process.env.NEXT_PUBLIC_BASE_URL_PROD?.replace("/api", ""), // Remove /api from frontend URL
-  process.env.NEXT_PUBLIC_BASE_URL_LOCAL?.replace("/api", ""),
+  process.env.NEXT_PUBLIC_BASE_URL_LOCAL, // Remove /api from frontend URL
+  process.env.NEXT_PUBLIC_BASE_URL_LOCAL,
 ].filter(Boolean) as string[];
 
 app.use(express.json());
