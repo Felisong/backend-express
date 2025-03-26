@@ -4,32 +4,30 @@ import dotenv from "dotenv";
 import userRoutes from "./routes/routes";
 import mongoose from "mongoose";
 
-dotenv.config(); // Load environment variables
+dotenv.config();
 
 const app = express();
 
-// Middleware
 app.use(express.json());
-app.use(cors());
+app.use(
+  cors({
+    origin: "https://portfolio-site-front.vercel.app",
+  })
+);
 
-// Connect to MongoDB
 const MONGO_URI = process.env.MONGO_URI || "";
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB Connection Error:", err));
 
+// Prefix all routes with /api
 app.use("/api", userRoutes);
 
-// Test route
+// Health check endpoint
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello from TypeScript + Express!");
+  res.send("API is running");
 });
 
-// Set up server port
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT} : http://localhost:5000`);
-});
-
+// Export the Express app as a Vercel serverless function
 export default app;
