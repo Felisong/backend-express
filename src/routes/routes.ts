@@ -10,7 +10,6 @@ router.get("/users", (req: Request, res: Response) => {
 
 router.get("/skills", async (req: Request, res: Response) => {
   try {
-    console.log("MongoDB readyState:", mongoose.connection.readyState);
     const skills = await Skills.find(); // Fetch skills from the database
 
     if (skills.length > 0) {

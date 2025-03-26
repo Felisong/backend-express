@@ -8,24 +8,14 @@ dotenv.config();
 
 const app = express();
 const allowedOrigins = [
-  process.env.NEXT_PUBLIC_BASE_URL_LOCAL, // Remove /api from frontend URL
   process.env.NEXT_PUBLIC_BASE_URL_LOCAL,
+  process.env.NEXT_PUBLIC_BASE_URL_PROD,
 ].filter(Boolean);
 
 app.use(express.json());
 app.use(
   cors({
     origin: true,
-    // origin: (origin, callback) => {
-    //   if (!origin) return callback(null, true);
-
-    //   if (allowedOrigins.includes(origin)) {
-    //     callback(null, true);
-    //   } else {
-    //     callback(new Error("Not allowed by CORS"));
-    //   }
-    // },
-    // credentials: true,
   })
 );
 
