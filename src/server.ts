@@ -15,7 +15,10 @@ const MONGO_URI = process.env.MONGO_URI || "";
 mongoose
   .connect(MONGO_URI)
   .then(() => console.log("✅ MongoDB Connected"))
-  .catch((err) => console.error("❌ MongoDB Connection Error:", err));
+  .catch((err) => {
+    console.error("❌ Fatal MongoDB Error:", err);
+    process.exit(1); // Force deployment failure on DB connection issues
+  });
 
 // Prefix all routes with /api
 app.use("/api", userRoutes);
