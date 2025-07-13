@@ -10,8 +10,25 @@ const routes_1 = __importDefault(require("./routes/routes"));
 const mongoose_1 = __importDefault(require("mongoose"));
 dotenv_1.default.config();
 const app = (0, express_1.default)();
+const allowedOrigins = [
+    process.env.NEXT_PUBLIC_BASE_URL_LOCAL,
+    process.env.NEXT_PUBLIC_BASE_URL_PROD,
+].filter(Boolean);
 app.use(express_1.default.json());
-app.use((0, cors_1.default)());
+app.use((0, cors_1.default)({
+    origin: (origin, callback) => {
+        if (!origin)
+            return callback(null, true);
+        if (allowedOrigins.some((allowed) => new URL(origin).origin === allowed)) {
+            callback(null, true);
+        }
+        else {
+            console.warn(`⚠️ Blocked CORS request from: ${origin}`);
+            callback(new Error("Not allowed by CORS"));
+        }
+    },
+    methods: ["GET"],
+}));
 const MONGO_URI = process.env.MONGO_URI || "";
 mongoose_1.default
     .connect(MONGO_URI)
@@ -26,6 +43,14 @@ app.use("/api", routes_1.default);
 // Health check endpoint
 app.get("/", (req, res) => {
     res.send("API is running");
+});
+// test
+app.get("/api/cors-info", (req, res) => {
+    res.json({
+        allowedOrigins,
+        currentOrigin: req.headers.origin,
+        isAllowed: allowedOrigins.includes(req.headers.origin || ""),
+    });
 });
 // Export the Express app as a Vercel serverless function
 exports.default = app;
