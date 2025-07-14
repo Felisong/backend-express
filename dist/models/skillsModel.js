@@ -12,5 +12,5 @@ const skillsSchema = new mongoose_1.default.Schema({
     logo_svg: { type: String, required: true },
     url: { type: String, required: true },
 });
-const Skills = mongoose_1.default.model("skills", skillsSchema);
+const Skills = mongoose_1.default.model("Skills", skillsSchema);
 exports.default = Skills;
