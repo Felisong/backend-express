@@ -19,20 +19,19 @@ router.get("/skills", async (req: Request, res: Response) => {
         .json({ skills, status: 200, message: "successfully fetched skills" });
     } else {
       res.status(404).json({
-        error: "No skills found",
         status: 404,
         message: "successfully fetched, but found no skills",
       });
     }
   } catch (error) {
-    res.status(500).json({ error: "Error fetching skills", status: 500 });
+    res.status(500).json({ message: "Error fetching skills", status: 500 });
   }
 });
 
-router.get("/prior-work", async (req: Request, res: Response) => {
+router.get("/prior-works", async (req: Request, res: Response) => {
   try {
     console.log(`I am getting pinged!`);
-    const priorWorks = await PriorWorks.find();
+    const priorWorks = await PriorWorks.find().populate("skills");
     console.log(`hello?: `, priorWorks);
     if (priorWorks.length > 0) {
       res.status(200).json({
@@ -42,13 +41,14 @@ router.get("/prior-work", async (req: Request, res: Response) => {
       });
     } else {
       res.status(404).json({
-        error: "No skills found",
         status: 404,
         message: "successfully fetched, but found no skills",
       });
     }
   } catch (err: any) {
-    res.status(500).json({ error: "Error fetching prior works" });
+    res
+      .status(500)
+      .json({ message: "Error fetching prior works", status: 500 });
   }
 });
 

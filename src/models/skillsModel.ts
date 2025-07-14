@@ -8,6 +8,6 @@ const skillsSchema = new mongoose.Schema({
   logo_svg: { type: String, required: true },
   url: { type: String, required: true },
 });
-const Skills = mongoose.model("skills", skillsSchema);
+const Skills = mongoose.model("Skills", skillsSchema);
 
 export default Skills;

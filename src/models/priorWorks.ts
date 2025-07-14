@@ -19,6 +19,7 @@ const priorWorksSchema = new mongoose.Schema({
     },
   ],
   figmaLinks: [{ type: String, required: false }],
+  alt: { type: String, required: true },
 });
 
 const PriorWorks = mongoose.model("priorWorks", priorWorksSchema, "priorWorks");
