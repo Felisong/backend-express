@@ -1,11 +1,11 @@
 // here i will put any extra logic i dont want to put in routes
 import BlockedIps from "./models/blockedIPSModel";
-import {
-  BlockedIpsModel,
-  StandardResponse,
-} from "../../frontend-react/app/utils/interface";
 import { log } from "./utils/custom-log";
 
+interface StandardResponse {
+  success: boolean;
+  message: string;
+}
 export class Middleware {
   async handleBots(
     ipAddress: string | undefined,
